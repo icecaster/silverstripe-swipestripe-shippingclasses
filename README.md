@@ -8,4 +8,4 @@ Requires SwipeStripe Flat Fee Shipping to work: https://github.com/icecaster/sil
 
 contact
 =======
-Tim Klein, Dodat Ltd <tim at dodat.co.nz>
+Tim Klein, Dodat Ltd - tim @ dodat.co.nz
