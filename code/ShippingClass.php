@@ -29,6 +29,50 @@ class ShippingClass extends DataObject {
 		}
 	}
 
+
+	public function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+
+		$records = array(
+			array(
+				"Name" => "Free",
+				"Priority" => 0
+			),
+			array(
+				"Name" => "Small",
+				"Priority" => 5
+			),
+			array(
+				"Name" => "Medium",
+				"Priority" => 10,
+				"IsDefault" => 1
+			),
+			array(
+				"Name" => "Large",
+				"Priority" => 20
+			),
+		);
+
+		if(!DataList::create(__CLASS__)->Count()) {
+			foreach($records as $record) {
+				$obj = new ShippingClass($record);
+				$obj->write();
+			}
+			DB::alteration_message('Default Shipping classes created', 'created');
+			
+			$rates = FlatFeeShippingRate::get();
+			
+			if($rates->Count()) {
+				$defaultClassID = ShippingClass::get()->filter("IsDefault", 1)->First()->ID;
+				foreach($rates as $rate) {
+					$rate->ShippingClassID = $defaultClassID;
+					$rate->write();
+					DB::alteration_message("Existing Shipping rate '{$rate->Title}' linked to default shipping class", 'created');
+				}
+			}
+		}
+	}
+
 }
 
 class ShippingClass_ProductExtension extends DataExtension {
