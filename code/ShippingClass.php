@@ -146,6 +146,10 @@ class ShippingClass_Admin extends ShopAdmin {
 		'ShopConfig/ShippingClasses' => 'ShippingClassesSettings'
 	);
 
+	static $allowed_actions = array(
+		"ShippingClassesSettings"
+	);
+
 	public function init() {
 		parent::init();
 		$this->modelClass = 'ShopConfig';
