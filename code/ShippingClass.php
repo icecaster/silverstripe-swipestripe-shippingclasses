@@ -5,7 +5,8 @@ class ShippingClass extends DataObject {
 	static $db = array(
 		"Name" => "Varchar",
 		"Priority" => "Int",
-		"IsDefault" => "Boolean"
+		"IsDefault" => "Boolean",
+		"SortOrder" => "Int"
 	);
 
 	static $has_many = array(
