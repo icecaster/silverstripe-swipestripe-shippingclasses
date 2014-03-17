@@ -148,7 +148,8 @@ class ShippingClass_Admin extends ShopAdmin {
 	);
 
 	static $allowed_actions = array(
-		"ShippingClassesSettings"
+		"ShippingClassesSettings",
+		"ShippingClassesForm"
 	);
 
 	public function init() {
