@@ -74,6 +74,19 @@ class ShippingClass extends DataObject {
 		}
 	}
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->removeByName("Rates");
+		if($this->ID) {
+			$fields->addFieldToTab("Root.Main", ListboxField::create("Rates", "Shipping Rates")
+				->setSource(FlatFeeShippingRate::get()->map()->toArray())
+				->setMultiple(true)
+			);
+		}
+		return $fields;
+	}
+
 }
 
 class ShippingClass_ProductExtension extends DataExtension {
@@ -123,7 +136,6 @@ class ShippingClass_FlatFeeShippingModificationExtension extends DataExtension {
 		// Order::Products() returns ArrayList, need DataList to allow map() with Callback
 		$products = Product::get()->byIDs($order->Products()->map("ID","ID"));
 
-
 		$shippingClassIDs = $products->map("ShippingClassID", "getShippingClassOrDefaultID")->toArray();
 
 		$highest_class = ShippingClass::get()
@@ -131,7 +143,8 @@ class ShippingClass_FlatFeeShippingModificationExtension extends DataExtension {
 			->Sort("Priority DESC")
 			->First();
 
-		$rates->where("ShippingClassID = '{$highest_class->ID}'");
+		return $rates->where("ShippingClassID = '{$highest_class->ID}'");
+
 	}
 }
 
